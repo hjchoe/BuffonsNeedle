@@ -15,7 +15,7 @@ class Probability extends JLabel
 	
 	public void update(double d, double h)
 	{
-		setText("2 * drops / hits = " + Double.toString(2*d/h));
+		setText("2 * drops / hits = " + Double.toString(2d*d/h));
 	}
 }
 

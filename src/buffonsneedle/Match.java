@@ -5,7 +5,9 @@ import java.awt.geom.Line2D;
 @SuppressWarnings("serial")
 class Match extends Line2D.Double
 {
-	Match(int x1, int y1, int angle)
+	Boolean touch = false;
+	
+	Match(double x1, double y1, double angle)
 	{
 		this.x1 = x1;
 		this.y1 = y1;

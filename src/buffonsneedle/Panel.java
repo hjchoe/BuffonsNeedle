@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 class Panel extends JPanel
 {
 	int[] lineY = new int[4];
-	Random rand = new Random();
+	Random rand;
 	private ArrayList<Match> matches;
 	Probability prob = new Probability();
 	Info inf = new Info();
@@ -26,6 +26,9 @@ class Panel extends JPanel
 	
 	public Panel()
 	{
+		long seed = System.nanoTime();
+		//System.out.println(seed);
+		rand = new Random(seed);
 		int temp = 100;
 		for(int i = 0; i < 4; i++)
 		{
@@ -66,7 +69,8 @@ class Panel extends JPanel
         
         for (Match m : matches)
         {
-            g2d.setColor(Color.RED);
+        	if (m.touch) g2d.setColor(Color.GREEN);
+        	else g2d.setColor(Color.RED);
             g2d.draw(m);
         }
 	}
@@ -74,14 +78,12 @@ class Panel extends JPanel
     public void newMatch()
     {
     	//System.out.println("tock");
-    	int x1 = rand.nextInt(500);
-    	int y1 = rand.nextInt(500);
-    	int angle = rand.nextInt(360);
     	
-    	while(!checkSecondPoint(x1, y1, angle))
-    	{
-    		angle = rand.nextInt(360);
-    	}
+    	double x1 = 100 + (400 - 100) * rand.nextDouble();
+    	double y1 = 100 + (400 - 100) * rand.nextDouble();
+    	
+    	//int angle = rand.nextInt(360);
+    	double angle = 360 * rand.nextDouble();
     	
     	matches.add(new Match(x1, y1, angle));
     	drops++;
@@ -94,6 +96,7 @@ class Panel extends JPanel
     		if ((y1 < ly && y2 > ly) || (y1 > ly && y2 < ly))
     		{
     			hits++;
+    			matches.get(matches.size() - 1).touch = true;
     			//System.out.println("cross!");
     			break;
     		}
@@ -106,7 +109,7 @@ class Panel extends JPanel
     	repaint();
     }
     
-    private Boolean checkSecondPoint(int x1, int y1, int angle)
+    private Boolean checkSecondPoint(double x1, double y1, double angle)
     {
     	double x2 = (100 * Math.cos(angle)) + x1;
     	double y2 = (100 * Math.sin(angle)) + y1;
